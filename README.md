@@ -1,4 +1,14 @@
-# Project Ares v1
+# Project Ares — Retired
+
+> **Status: RETIRED — October 5, 2026**
+>
+> Project Ares was retired before implementation as part of a deliberate simplification of the Cyber Operations Center roadmap. The dedicated Ares v1/v2 hardware builds and standalone adversary-simulation curriculum will not be pursued.
+>
+> Controlled offensive-security testing remains available when it directly supports security-engineering work. Those exercises will use temporary, isolated VMs/labs on Project Cerberus for purposes such as Active Directory validation, Wazuh/detection engineering, hardening verification, and COC testing.
+>
+> This repository is preserved as a historical design record. It is not an active or planned build.
+
+---
 
 > A headless, Proxmox-based cyber range for controlled adversary simulation and detection validation.
 
