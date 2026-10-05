@@ -1,37 +1,48 @@
 # Automation Design
 
-## Controller responsibilities
+## Principle
 
-ARES-CTRL validates scenario manifests, checks capacity and safety gates, creates a mission record, starts the required guests, confirms snapshots and telemetry, runs approved tasks, captures evidence, calculates detection results, and restores the lab.
+**Automate repetition, not learning.**
 
-## Scenario contract
+Ares automation is optional. The project no longer assumes that a permanent controller, dashboard, or full scenario engine must be built. Manual setup is acceptable while exercises are infrequent because understanding the underlying systems is part of the learning objective.
 
-Each scenario will declare:
+## ARES-CTRL threshold
 
-- unique ID, version, owner, risk tier, and ATT&CK mappings;
-- required guests, networks, accounts, snapshots, and resource budget;
-- preflight tests and explicit authorization acknowledgement;
-- ordered simulation steps with timeouts and idempotency expectations;
-- expected telemetry, detections, and scoring weights;
-- abort actions, cleanup, snapshot restoration, and verification;
-- evidence retention and redaction requirements.
+Build ARES-CTRL only when repeated Ares usage creates enough operational friction to justify it. If built, it may validate scenario definitions, check isolation and capacity, start required guests, verify telemetry, collect evidence, and reset the range.
+
+It must not automate away the security-engineering reasoning the exercise is intended to teach.
+
+## Possible scenario contract
+
+For repeated scenarios, a manifest may declare:
+
+- scenario purpose and engineering question;
+- required guests and networks;
+- resource budget;
+- preflight isolation and authorization checks;
+- controlled test steps;
+- expected telemetry/detections;
+- cleanup and snapshot restoration;
+- evidence requirements.
 
 ## Guardrails
 
-- Dry-run is the default execution mode.
-- High-risk steps require a second confirmation and active isolation check.
-- Tasks use allowlisted modules rather than arbitrary dashboard commands.
-- Every action receives a correlation ID and append-only event entry.
-- Concurrency is capped by memory, storage latency, and scenario conflicts.
-- Failed reset verification blocks the next mission.
+- Dry-run for automated destructive or high-impact actions.
+- Isolation validation before controlled offensive activity.
+- Allowlisted modules rather than arbitrary dashboard commands.
+- No production credentials or personal data.
+- Failed reset/isolation verification blocks the next automated run.
+- Automation must remain understandable and overridable by the operator.
 
 ## Future layout
 
 ```text
 automation/
-  api/          controller endpoints
-  engine/       state machine and task runner
-  providers/    Proxmox, guest and AWS adapters
-  schemas/      manifest and report validation
-  tests/        dry-run and safety-gate tests
+  api/          optional controller endpoints
+  engine/       optional state machine/task runner
+  providers/    virtualization and guest adapters
+  schemas/      optional manifest/report validation
+  tests/        safety-gate and dry-run tests
 ```
+
+This structure is a future option, not a commitment to build a separate Ares software platform.
